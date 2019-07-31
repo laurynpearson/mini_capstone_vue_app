@@ -6,8 +6,12 @@
    <button v-on:click="makeProduct()">Make a new product</button>
     <div v-for="product in products">
       <p>title:{{product.name}}</p>
-    <!--   <p>image url: {{product.images_url}}</p> -->
+      <p>image url: {{product.image}}</p>
       <img v-bind:src="product.images_url" v-bind:alt="product.name"/>
+      <p><button v-on:click="setProduct(product)">Show more info</button></p>
+      <div v-if="currentProduct === product">
+        <p>description: {{ product.description }}</p>
+      </div>
       <hr>
     </div>
   </div>
@@ -25,7 +29,8 @@ export default {
       message: "Hi!",
       products: [],
       newProductName: "",
-      newProductDescription: ""
+      newProductDescription: "",
+      currentProduct: {}
     };
   },
   created: function() {
@@ -49,6 +54,11 @@ export default {
         console.log(response.data);
         this.products.push(response.data);
       });
+    },
+    setProduct: function(theProduct) {
+      console.log('setting the product');
+      console.log(theProduct);
+      this.currentProduct = theProduct;
     }
   }
 };
