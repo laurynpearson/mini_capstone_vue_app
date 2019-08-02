@@ -11,6 +11,10 @@
       <p><button v-on:click="setProduct(product)">Show more info</button></p>
       <div v-if="currentProduct === product">
         <p>description: {{ product.description }}</p>
+        <p>Title: <input type="text" v-model="product.name"></p>
+        <p>Description: <input type="text" v-model="product.description"></p>
+        <p>Image URL: <input type="text" v-model="product.image"></p>
+        <button v-on:click="updateProduct(product)">Update the product</button>
       </div>
       <hr>
     </div>
@@ -59,6 +63,16 @@ export default {
       console.log('setting the product');
       console.log(theProduct);
       this.currentProduct = theProduct;
+    },
+    updateProduct: function(theProduct) {
+      console.log('updating product');
+      console.log(theProduct);
+      axios.patch('/api/products/' + theProduct.id, theProduct).then(response => {
+        console.log(response.data);
+        theProduct.name = response.data.name;
+        theProduct.description = response.data.description;
+        theProduct.image = response.data.image;
+      });
     }
   }
 };
