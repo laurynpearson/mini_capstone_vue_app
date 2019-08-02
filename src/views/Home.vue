@@ -15,6 +15,9 @@
         <p>Description: <input type="text" v-model="product.description"></p>
         <p>Image URL: <input type="text" v-model="product.image"></p>
         <button v-on:click="updateProduct(product)">Update the product</button>
+        <hr>
+        <button v-on:click="destroyProduct(product)">Destroy the product</button>
+        <hr>
       </div>
       <hr>
     </div>
@@ -72,6 +75,15 @@ export default {
         theProduct.name = response.data.name;
         theProduct.description = response.data.description;
         theProduct.image = response.data.image;
+      });
+    },
+    destroyProduct: function(theProduct) {
+      console.log('destroying product');
+      console.log(theProduct);
+      axios.delete('/api/products/' + theProduct.id).then(response => {
+        console.log(response.data);
+        var index = this.products.indexOf(theProduct);
+        this.products.splice(index, 1);
       });
     }
   }
