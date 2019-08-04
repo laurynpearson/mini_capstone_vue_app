@@ -3,6 +3,7 @@
     <h1>{{ message }}</h1>
     <p>Name: <input type="text" v-model="newProductName"></p>
     <p>Description: <input type="text" v-model="newProductDescription"></p>
+   <!--  <p>Image URL: <input type="text" v-model="newProductImage"></p> -->
    <button v-on:click="makeProduct()">Make a new product</button>
     <div v-for="product in products">
       <p>title:{{product.name}}</p>
@@ -54,6 +55,7 @@ export default {
       var newProduct = {
         name: this.newProductName,
         Description: this.newProductDescription
+        // image: this.newProductImage
       };
       //send data to the API
       axios.post('/api/products', newProduct).then(response => {
@@ -65,27 +67,31 @@ export default {
     setProduct: function(theProduct) {
       console.log('setting the product');
       console.log(theProduct);
-      this.currentProduct = theProduct;
-    },
-    updateProduct: function(theProduct) {
-      console.log('updating product');
-      console.log(theProduct);
-      axios.patch('/api/products/' + theProduct.id, theProduct).then(response => {
-        console.log(response.data);
-        theProduct.name = response.data.name;
-        theProduct.description = response.data.description;
-        theProduct.image = response.data.image;
-      });
-    },
-    destroyProduct: function(theProduct) {
-      console.log('destroying product');
-      console.log(theProduct);
-      axios.delete('/api/products/' + theProduct.id).then(response => {
-        console.log(response.data);
-        var index = this.products.indexOf(theProduct);
-        this.products.splice(index, 1);
-      });
+      if (this.currentProduct === theProduct) {
+        this.currentProduct = {};
+      } else {
+        this.currentProduct = theProduct;
+      }
     }
+  },
+  updateProduct: function(theProduct) {
+    console.log('updating product');
+    console.log(theProduct);
+    axios.patch('/api/products/' + theProduct.id, theProduct).then(response => {
+      console.log(response.data);
+      theProduct.name = response.data.name;
+      theProduct.description = response.data.description;
+      theProduct.image = response.data.image;
+    });
+  },
+  destroyProduct: function(theProduct) {
+    console.log('destroying product');
+    console.log(theProduct);
+    axios.delete('/api/products/' + theProduct.id).then(response => {
+      console.log(response.data);
+      var index = this.products.indexOf(theProduct);
+      this.products.splice(index, 1);
+    });
   }
 };
 </script>
