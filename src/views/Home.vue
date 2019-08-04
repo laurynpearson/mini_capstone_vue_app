@@ -7,7 +7,7 @@
    <button v-on:click="makeProduct()">Make a new product</button>
     <div v-for="product in products">
       <p>title:{{product.name}}</p>
-      <p>image url: {{product.image}}</p>
+      <!-- <p>image url: {{product.image}}</p> -->
       <img v-bind:src="product.images_url" v-bind:alt="product.name"/>
       <p><button v-on:click="setProduct(product)">Show more info</button></p>
       <div v-if="currentProduct === product">
